@@ -14,8 +14,9 @@
 				"singleQuote": false,
 				"tabWidth": 4,
 				"printWidth": 85,
-				"trailingComma": "none"
+				"trailingComma": "none",
+				"jsxBracketSameLine": false
 			}
-		  ]
+		]
 	}
 }

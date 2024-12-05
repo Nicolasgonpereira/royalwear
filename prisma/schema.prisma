@@ -9,7 +9,177 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id        String           @id @default(cuid())
+  name      String
+  email     String           @unique
+  password  String
+  role      Role             @default(USER)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  orders    Order[]
+  wishlist  Wishlist[]
+  history   ProductHistory[]
+  cart      CartItem[]
+  review    Review[]
+}
+
+model Product {
+  id             String           @id @default(cuid())
+  name           String
+  description    String
+  price          Float
+  images         String[]
+  category       Category         @relation(fields: [categoryId], references: [id])
+  categoryId     String
+  stock          Int
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  reviews        Review[]
+  visits         Int              @default(0)
+  shoe           Shoe?
+  Shirt          Shirt?
+  Blazer         Blazer?
+  Pants          Pants?
+  CartItem       CartItem[]
+  OrderProduct   OrderProduct[]
+  Wishlist       Wishlist[]
+  ProductHistory ProductHistory[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  type     String
+  products Product[]
+}
+
+model Shoe {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @unique
+  size      Int
+  material  String
+  color     String
+  brand     String
+}
+
+model Shirt {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @unique
+  size      String
+  fabric    String
+  color     String
+  brand     String
+}
+
+model Blazer {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @unique
+  size      String
+  material  String
+  color     String
+  brand     String
+}
+
+model Pants {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @unique
+  size      String
+  material  String
+  color     String
+  brand     String
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  quantity  Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          String         @id @default(cuid())
+  user        User           @relation(fields: [userId], references: [id])
+  userId      String
+  status      OrderStatus    @default(PENDING)
+  totalAmount Float
+  products    OrderProduct[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model OrderProduct {
+  id        String  @id @default(cuid())
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Wishlist {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model ProductHistory {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  viewedAt  DateTime @default(now())
+}
+
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  discount    Float
+  validFrom   DateTime
+  validUntil  DateTime
+  maxUses     Int
+  currentUses Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
