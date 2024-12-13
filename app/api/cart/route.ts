@@ -33,6 +33,29 @@ export const POST = authMiddleware(async (request: NextRequest) => {
 	const { productId, quantity } = await request.json();
 
 	try {
+		const existingCartItem = await prisma.cartItem.findFirst({
+			where: {
+				userId: user.id,
+				productId: productId
+			}
+		});
+
+		if (existingCartItem) {
+			const cartItem = await prisma.cartItem.update({
+				where: {
+					id: existingCartItem.id,
+					userId: user.id
+				},
+				data: {
+					quantity: existingCartItem.quantity + quantity
+				},
+				include: {
+					product: true
+				}
+			});
+			return NextResponse.json(cartItem, { status: 200 });
+		}
+
 		const cartItem = await prisma.cartItem.create({
 			data: {
 				quantity,
