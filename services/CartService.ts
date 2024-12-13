@@ -1,14 +1,14 @@
 "use client";
-import { CartItem } from "@prisma/client";
+import { CartWithProductIncluded } from "@/types/cart";
 
 const apiUrl: string = process.env.API_URL || "http://localhost:3000/api";
-let updatedCartItems: CartItem[] = [];
+let updatedCartItems: CartWithProductIncluded[] = [];
 
 export async function addItem(
-	cartItems: CartItem[],
+	cartItems: CartWithProductIncluded[],
 	productId: string,
 	quantity: number = 1
-): Promise<CartItem[]> {
+): Promise<CartWithProductIncluded[]> {
 	updatedCartItems = [...cartItems];
 	const existingItem = updatedCartItems.find(
 		(item) => item.productId === productId
@@ -23,10 +23,8 @@ export async function addItem(
 		);
 		return updatedCartItems;
 	} else {
-		const newCartItem: CartItem | undefined = await addItemToCartAPI(
-			productId,
-			quantity
-		);
+		const newCartItem: CartWithProductIncluded | undefined =
+			await addItemToCartAPI(productId, quantity);
 		if (newCartItem) {
 			updatedCartItems.push(newCartItem);
 			return updatedCartItems;
@@ -36,11 +34,13 @@ export async function addItem(
 	}
 }
 
-export function getTotalItems(cartItems: CartItem[]): number {
+export function getTotalItems(cartItems: CartWithProductIncluded[]): number {
 	return cartItems.reduce((total, item) => total + item.quantity, 0);
 }
 
-export async function fetchCartFromAPI(): Promise<CartItem[] | undefined> {
+export async function fetchCartFromAPI(): Promise<
+	CartWithProductIncluded[] | undefined
+> {
 	try {
 		const response = await fetch(`${apiUrl}/cart`);
 		if (!response.ok) {
@@ -56,7 +56,7 @@ export async function fetchCartFromAPI(): Promise<CartItem[] | undefined> {
 async function addItemToCartAPI(
 	productId: string,
 	quantity: number
-): Promise<CartItem | undefined> {
+): Promise<CartWithProductIncluded | undefined> {
 	try {
 		const response = await fetch(`${apiUrl}/cart`, {
 			method: "POST",
@@ -76,11 +76,11 @@ async function addItemToCartAPI(
 }
 
 export async function updateItemToCartAPI(
-	productId: string,
+	id: string,
 	quantity: number
 ): Promise<boolean | undefined> {
 	try {
-		const response = await fetch(`${apiUrl}/cart/${productId}`, {
+		const response = await fetch(`${apiUrl}/cart/${id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json"

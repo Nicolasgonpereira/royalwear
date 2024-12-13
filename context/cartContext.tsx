@@ -6,11 +6,11 @@ import {
 	fetchCartFromAPI,
 	updateItemToCartAPI
 } from "@/services/CartService";
-import { CartItem } from "@prisma/client";
+import { CartWithProductIncluded } from "@/types/cart";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type CartContextType = {
-	cart: CartItem[];
+	cart: CartWithProductIncluded[];
 	addItemToCart: (productId: string, quantity: number) => void;
 	removeItemFromCart: (id: string) => void;
 	updateItemQuantity: (id: string, quantity: number) => void;
@@ -25,7 +25,7 @@ export default function CartProvider({
 }: {
 	children: React.ReactNode;
 }) {
-	const [cart, setCart] = useState<CartItem[]>([]);
+	const [cart, setCart] = useState<CartWithProductIncluded[]>([]);
 
 	useEffect(() => {
 		fetchCart();
@@ -40,7 +40,6 @@ export default function CartProvider({
 
 	const addItemToCart = async (productId: string, quantity: number = 1) => {
 		const newCartItems = await addItem(cart, productId, quantity);
-		console.log(newCartItems);
 		setCart(newCartItems);
 	};
 
