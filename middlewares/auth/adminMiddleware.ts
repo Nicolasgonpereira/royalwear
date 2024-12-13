@@ -7,9 +7,13 @@ export const adminMiddleware =
 			request: NextRequest,
 			params: any,
 			response: NextResponse
-		) => Promise<unknown>
+		) => Promise<NextResponse>
 	) =>
-	async (request: NextRequest, params: any, response: NextResponse) => {
+	async (
+		request: NextRequest,
+		params: any,
+		response: NextResponse
+	): Promise<NextResponse> => {
 		const user = (request as any).user;
 
 		if (!user || user.role !== "ADMIN") {

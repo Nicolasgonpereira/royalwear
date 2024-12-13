@@ -10,9 +10,13 @@ export const authMiddleware =
 			request: NextRequest,
 			params: any,
 			response: NextResponse
-		) => Promise<unknown>
+		) => Promise<NextResponse>
 	) =>
-	async (request: NextRequest, params: any, response: NextResponse) => {
+	async (
+		request: NextRequest,
+		params: any,
+		response: NextResponse
+	): Promise<NextResponse> => {
 		const token = request.cookies.get("token")?.value;
 
 		if (!token) {
