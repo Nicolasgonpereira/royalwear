@@ -17,10 +17,9 @@ export default function Page() {
 								Tecnologias Utilizadas
 							</h2>
 							<ul className="list-disc list-inside space-y-2">
-								<li>Next.js 13 com App Router</li>
+								<li>Next.js 15 com App Router</li>
 								<li>TypeScript</li>
 								<li>Tailwind CSS</li>
-								<li>React</li>
 							</ul>
 						</div>
 						<div className="px-6 mt-8">
