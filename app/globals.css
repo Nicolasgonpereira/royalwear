@@ -3,32 +3,32 @@
 @tailwind utilities;
 
 :root {
-	--background: rgb(255 255 255);
-	--foreground: rgb(0 0 0);
-	--primary: rgb(59 130 246);
-	--primaryforeground: rgb(255 255 255);
-	--secondary: rgb(156 163 175);
-	--secondaryforeground: rgb(0 0 0);
-	--muted: rgb(229 231 235);
-	--mutedforeground: rgb(107 114 128);
-	--border: rgb(209 213 219);
-	--input: rgb(209 213 219);
-	--ring: rgb(59 130 246);
+	--background: #ffffff;
+	--foreground: #000000;
+	--primary: #3b82f6;
+	--primaryforeground: #ffffff;
+	--secondary: #9ca3af;
+	--secondaryforeground: #000000;
+	--muted: #e5e7eb;
+	--mutedforeground: #6b7280;
+	--border: #d1d5db;
+	--input: #d1d5db;
+	--ring: #3b82f6;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background: rgb(17 24 39);
-		--foreground: rgb(255 255 255);
-		--primary: rgb(96 165 250);
-		--primary-foreground: rgb(17 24 39);
-		--secondary: rgb(75 85 99);
-		--secondary-foreground: rgb(255 255 255);
-		--muted: rgb(55 65 81);
-		--muted-foreground: rgb(229 231 235);
-		--border: rgb(55 65 81);
-		--input: rgb(75 85 99);
-		--ring: rgb(96 165 250);
+		--background: #111827;
+		--foreground: #ffffff;
+		--primary: #60a5fa;
+		--primary-foreground: #111827;
+		--secondary: #4b5563;
+		--secondary-foreground: #ffffff;
+		--muted: #374151;
+		--muted-foreground: #e5e7eb;
+		--border: #374151;
+		--input: #4b5563;
+		--ring: #60a5fa;
 	}
 }
 
