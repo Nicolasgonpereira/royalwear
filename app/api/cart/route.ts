@@ -38,6 +38,9 @@ export const POST = authMiddleware(async (request: NextRequest) => {
 				quantity,
 				userId: user.id,
 				productId
+			},
+			include: {
+				product: true
 			}
 		});
 
