@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export default async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
 	const { email, password } = await request.json();
 
 	if (!email || !password) {
@@ -33,7 +33,12 @@ export default async function POST(request: NextRequest) {
 	}
 
 	const token = jwt.sign(
-		{ id: user.id, name: user.name, email: user.email },
+		{
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			...(user.role === "ADMIN" && { role: user.role })
+		},
 		JWT_SECRET,
 		{ expiresIn: "2d" }
 	);

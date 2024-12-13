@@ -4,9 +4,11 @@ import { NextResponse } from "next/server";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export default async function GET() {
+export async function GET() {
 	const cookieStore = await cookies();
+	console.log(cookieStore);
 	const token = cookieStore.get("token");
+	console.log(token);
 
 	if (!token) {
 		return NextResponse.json(
@@ -16,7 +18,7 @@ export default async function GET() {
 	}
 
 	try {
-		const decoded = jwt.verify(String(token), JWT_SECRET);
+		const decoded = jwt.verify(token.value, JWT_SECRET);
 		return NextResponse.json(
 			{ message: "User authenticated", user: decoded },
 			{ status: 200 }
