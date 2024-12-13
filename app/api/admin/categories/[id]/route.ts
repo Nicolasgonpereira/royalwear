@@ -7,8 +7,8 @@ export const PUT = authMiddleware(
 	adminMiddleware(
 		async (
 			request: NextRequest,
-			{ params }: { params: { id: string } }
-		) => {
+			{ params }: { params: Promise<{ id: string }> }
+		): Promise<NextResponse> => {
 			const { id } = await params;
 			const { name, type } = await request.json();
 
