@@ -11,7 +11,6 @@ interface User {
 
 export const GET = authMiddleware(async (request: NextRequest) => {
 	const user: User = (request as any).user;
-
 	try {
 		const cartItems = await prisma.cartItem.findMany({
 			where: { userId: user.id },
@@ -44,6 +43,9 @@ export const POST = authMiddleware(async (request: NextRequest) => {
 
 		return NextResponse.json(cartItem, { status: 201 });
 	} catch {
-		return NextResponse.json({ message: "Error adding product to cart." });
+		return NextResponse.json(
+			{ message: "Error adding product to cart." },
+			{ status: 500 }
+		);
 	}
 });

@@ -10,10 +10,10 @@ interface User {
 }
 
 export const PUT = authMiddleware(
-	async (request: NextRequest, params: { id: string }) => {
+	async (request: NextRequest, { params }: { params: { id: string } }) => {
 		const user: User = (request as any).user;
 		const { quantity } = await request.json();
-		const { id } = params;
+		const { id } = await params;
 
 		try {
 			const updatedItem = await prisma.cartItem.update({
@@ -36,9 +36,9 @@ export const PUT = authMiddleware(
 	}
 );
 export const DELETE = authMiddleware(
-	async (request: NextRequest, params: { id: string }) => {
+	async (request: NextRequest, { params }: { params: { id: string } }) => {
 		const user: User = (request as any).user;
-		const { id } = params;
+		const { id } = await params;
 
 		try {
 			await prisma.cartItem.delete({
