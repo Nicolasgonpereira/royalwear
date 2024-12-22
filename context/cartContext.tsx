@@ -8,6 +8,7 @@ import {
 } from "@/services/CartService";
 import { CartWithProductIncluded } from "@/types/cart";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useUser } from "./userContext";
 
 type CartContextType = {
 	cart: CartWithProductIncluded[];
@@ -26,10 +27,13 @@ export default function CartProvider({
 	children: React.ReactNode;
 }) {
 	const [cart, setCart] = useState<CartWithProductIncluded[]>([]);
+	const { user } = useUser();
 
 	useEffect(() => {
-		fetchCart();
-	}, []);
+		if (user) {
+			fetchCart();
+		}
+	}, [user]);
 
 	const fetchCart = async () => {
 		const cartItems = await fetchCartFromAPI();
