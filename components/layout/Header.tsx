@@ -1,18 +1,14 @@
 "use client";
 
+import { useCart } from "@/context/cartContext";
 import Link from "next/link";
 import { useState } from "react";
-import {
-	FaBars,
-	FaSearch,
-	FaShoppingCart,
-	FaTimes,
-	FaUser
-} from "react-icons/fa";
+import { FaBars, FaShoppingCart, FaTimes, FaUser } from "react-icons/fa";
 import DrawerMenu from "../ui/drawerMenu";
 
 export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const { cart } = useCart();
 
 	return (
 		<>
@@ -30,17 +26,22 @@ export default function Header() {
 								<FaTimes className="w-6 h-6" />
 							)}
 						</button>
-						<Link href="/profile">
+						<Link
+							href="/profile"
+							onClick={() => setIsMenuOpen(!isMenuOpen)}
+						>
 							<FaUser className="w-6 h-6" />
 						</Link>
 					</div>
 					<div className="text-1xl font-bold">
-						<Link href="/">RoyalWear</Link>
+						<Link href="/" onClick={() => setIsMenuOpen(false)}>
+							RoyalWear
+						</Link>
 					</div>
 					<nav className="flex items-center justify-between md:grow">
 						<ul className={"hidden md:flex-row md:flex space-x-4"}>
 							<li>
-								<Link href="/shop">Shop</Link>
+								<Link href="/products">Products</Link>
 							</li>
 							<li>
 								<Link href="/about">About</Link>
@@ -53,11 +54,22 @@ export default function Header() {
 							<Link className="hidden md:block" href="/profile">
 								<FaUser className="w-6 h-6" />
 							</Link>
-							<Link href="/search">
+							{/* Search feature will be add later */}
+							{/* <Link
+								href="/search"
+								onClick={() => setIsMenuOpen(false)}
+							>
 								<FaSearch className="w-6 h-6" />
-							</Link>
-							<Link href="/cart">
+							</Link> */}
+							<Link
+								href="/cart"
+								className="relative"
+								onClick={() => setIsMenuOpen(false)}
+							>
 								<FaShoppingCart className="w-6 h-6" />
+								<span className="absolute top-0 -right-2 text-black -translate-y-1/2 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center">
+									{cart.length}
+								</span>
 							</Link>
 						</div>
 					</nav>
@@ -66,13 +78,28 @@ export default function Header() {
 			<DrawerMenu isOpen={isMenuOpen} position="left" width="w-full">
 				<ul>
 					<li className="border-b border-border py-4 px-3">
-						<Link href="/shop">Shop</Link>
+						<Link
+							href="/products"
+							onClick={() => setIsMenuOpen(false)}
+						>
+							Products
+						</Link>
 					</li>
 					<li className="border-b border-border py-4 px-3">
-						<Link href="/about">About</Link>
+						<Link
+							href="/about"
+							onClick={() => setIsMenuOpen(false)}
+						>
+							About
+						</Link>
 					</li>
 					<li className="border-b border-border py-4 px-3">
-						<Link href="/contact">Contact</Link>
+						<Link
+							href="/contact"
+							onClick={() => setIsMenuOpen(false)}
+						>
+							Contact
+						</Link>
 					</li>
 				</ul>
 			</DrawerMenu>
