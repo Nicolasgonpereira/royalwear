@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Page() {
-	const [email, setEmail] = useState<string>("nicolasgp.ec@gmail.com");
-	const [password, setPassword] = useState<string>("admin123");
+	const [email, setEmail] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
 	const [response, setResponse] = useState<{ status?: number }>({});
 	const [loading, setLoading] = useState<boolean>(false);
 	const { user, triggerRevalidation } = useUser();
