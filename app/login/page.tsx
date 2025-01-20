@@ -1,29 +1,42 @@
 "use client";
+import { useUser } from "@/context/userContext";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
 	const apiUrl = process.env.API_URL || "http://localhost:3000/api";
-	const [email, setEmail] = useState("nicolasgp.ec@gmail.com");
-	const [password, setPassword] = useState("admin123");
-
+	const [email, setEmail] = useState<string>("nicolasgp.ec@gmail.com");
+	const [password, setPassword] = useState<string>("admin123");
+	const [response, setResponse] = useState<{ status?: number }>({});
+	const [loading, setLoading] = useState<boolean>(false);
+	const { user, triggerRevalidation } = useUser();
 	const router = useRouter();
+
+	useEffect(() => {
+		if (user) {
+			router.push("/profile");
+		}
+	}, [router, user]);
 
 	const handleLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
-		const response = await fetch(`${apiUrl}/auth/login`, {
+		setLoading(true);
+		const loginResponse = await fetch(`${apiUrl}/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({ email, password })
 		});
+		setLoading(false);
 
-		if (response.ok) {
-			console.log("Login successful");
+		if (loginResponse.ok) {
+			setResponse({ status: loginResponse.status });
+			triggerRevalidation();
 			router.push("/");
 		} else {
-			console.error("Login failed");
+			setResponse({ status: loginResponse.status });
 		}
 	};
 
@@ -69,12 +82,60 @@ export default function Page() {
 					<div>
 						<button
 							type="submit"
-							className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-primaryForeground bg-primary hover:ring-2 hover:ring-ring focus:outline-none focus:ring-2 focus:ring-ring"
+							className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-primaryForeground bg-primary hover:ring-2 hover:ring-ring focus:outline-none focus:ring-2 focus:ring-ring ${loading ? "disabled" : ""}`}
 						>
-							Sign in
+							{loading ? (
+								<>
+									<svg
+										className="motion-reduce:hidden animate-spin -ml-1 h-5 w-5 mr-3"
+										fill="none"
+										viewBox="0 0 24 24"
+									>
+										<circle
+											className="opacity-25"
+											cx="12"
+											cy="12"
+											r="10"
+											stroke="currentColor"
+											strokeWidth={4}
+										></circle>
+										<path
+											className="opacity-75"
+											fill="currentColor"
+											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+										></path>
+									</svg>
+									<p>Processing...</p>
+								</>
+							) : (
+								"Sign in"
+							)}
 						</button>
 					</div>
+					<div>
+						{!loading && response.status === 401 && (
+							<div className="text-white text-sm text-center bg-red-500 p-2 rounded-md -mt-4">
+								Invalid email or password
+							</div>
+						)}
+						{!loading && response.status === 200 && (
+							<div className="text-white text-sm text-center bg-green-500 p-2 rounded-md -mt-4">
+								You have successfully logged in
+							</div>
+						)}
+					</div>
 				</form>
+				<div>
+					<p className="text-center text-sm">
+						Don&apos;t have an account?{" "}
+						<Link
+							href="/register"
+							className="font-medium text-primary hover:text-primary-foreground"
+						>
+							Register
+						</Link>
+					</p>
+				</div>
 			</div>
 		</main>
 	);
