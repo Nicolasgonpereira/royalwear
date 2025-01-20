@@ -27,7 +27,6 @@ export default function Page() {
 		if (registerResponse.ok) {
 			setResponse({ status: registerResponse.status });
 			handleLogin();
-			router.push("/");
 		} else {
 			setResponse({ status: registerResponse.status });
 			setLoading(false);
@@ -35,7 +34,7 @@ export default function Page() {
 	};
 
 	const handleLogin = async () => {
-		const loginResponse = await fetch("/auth/login", {
+		const loginResponse = await fetch("/api/auth/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
