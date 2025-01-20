@@ -13,14 +13,9 @@ export async function addItem(
 	const existingItem = updatedCartItems.find(
 		(item) => item.productId === productId
 	);
-	console.log(existingItem);
 	if (existingItem) {
 		existingItem.quantity += quantity;
 		updateItemToCartAPI(existingItem.id, existingItem.quantity);
-		console.log(
-			"updated no cartservice after add quantity",
-			updatedCartItems
-		);
 		return updatedCartItems;
 	} else {
 		const newCartItem: CartWithProductIncluded | undefined =
