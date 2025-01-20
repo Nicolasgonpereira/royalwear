@@ -57,7 +57,7 @@ export default function CartPage() {
 												parseInt(e.target.value)
 											)
 										}
-										className="text-primaryForeground w-16 px-2 py-1 border border-border rounded mr-4"
+										className="text-black w-10 px-2 py-1 border border-border rounded mr-4 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 										min="1"
 									/>
 									<button
