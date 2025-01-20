@@ -1,7 +1,7 @@
 import { IProduct } from "@/app/products/[id]/[[...productName]]/page";
 import { Product } from "@prisma/client";
 
-const apiUrl: string = process.env.API_URL || "http://localhost:3000/api";
+const apiUrl: string = process.env.API_URL;
 
 export async function getProducts(): Promise<IProduct[] | undefined> {
 	try {

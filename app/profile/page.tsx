@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Page() {
-	const apiUrl = process.env.API_URL || "http://localhost:3000/api";
+	const apiUrl = process.env.API_URL;
 	const { user, setUser } = useUser();
 	const router = useRouter();
 

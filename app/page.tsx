@@ -1,7 +1,7 @@
 import ProductCard from "@/components/ui/product-card";
 import { IProduct } from "./products/[id]/[[...productName]]/page";
 
-const apiUrl = process.env.API_URL || "http://localhost:3000/api";
+const apiUrl = process.env.API_URL;
 
 export default async function Home() {
 	const data = await fetch(`${apiUrl}/products`, {

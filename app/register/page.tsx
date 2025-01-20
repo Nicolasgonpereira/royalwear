@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page() {
-	const apiUrl = process.env.API_URL || "http://localhost:3000/api";
+	const apiUrl = process.env.API_URL;
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");

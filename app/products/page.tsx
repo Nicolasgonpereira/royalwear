@@ -1,7 +1,7 @@
 import ProductCard from "@/components/ui/product-card";
 import { Product } from "@prisma/client";
 
-const apiUrl = process.env.API_URL || "http://localhost:3000/api";
+const apiUrl = process.env.API_URL;
 
 export default async function Page() {
 	const data = await fetch(`${apiUrl}/products`, {

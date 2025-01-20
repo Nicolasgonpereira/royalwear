@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: Params }) {
 	const { id, productName } = await params;
-	const apiUrl = process.env.API_URL || "http://localhost:3000/api";
+	const apiUrl = process.env.API_URL;
 	const data = await fetch(`${apiUrl}/products/${id}`, {
 		next: { tags: [`products-${id}`] }
 	});
