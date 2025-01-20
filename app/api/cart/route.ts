@@ -16,6 +16,9 @@ export const GET = authMiddleware(async (request: NextRequest) => {
 			where: { userId: user.id },
 			include: {
 				product: true
+			},
+			orderBy: {
+				createdAt: "asc"
 			}
 		});
 
