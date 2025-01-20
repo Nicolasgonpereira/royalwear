@@ -4,7 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type UserContextType = {
 	user: User | null;
-	setUser: (user: User) => void;
+	setUser: (user: User | null) => void;
+	triggerRevalidation: () => void;
 };
 
 type User = {
@@ -24,10 +25,24 @@ export default function UserProvider({
 	children: React.ReactNode;
 }) {
 	const [user, setUser] = useState<User | null>(null);
+	const [revalidate, setRevalidate] = useState<boolean>(false);
 
 	useEffect(() => {
+		const checkCookies = () => {
+			const cookies = document.cookie.split(";");
+			const tokenCookie = cookies.find((cookie) =>
+				cookie.trim().startsWith("token=")
+			);
+			if (!tokenCookie) {
+				setUser(null);
+				return false;
+			}
+			return true;
+		};
+
+		if (!checkCookies()) return;
 		fetchUser();
-	}, []);
+	}, [revalidate]);
 
 	const fetchUser = async () => {
 		const response = await fetch("/api/auth/verify");
@@ -40,8 +55,12 @@ export default function UserProvider({
 		}
 	};
 
+	const triggerRevalidation = () => {
+		setRevalidate((prev) => !prev);
+	};
+
 	return (
-		<userContext.Provider value={{ user, setUser }}>
+		<userContext.Provider value={{ user, setUser, triggerRevalidation }}>
 			{children}
 		</userContext.Provider>
 	);
