@@ -12,7 +12,7 @@ import { useUser } from "./userContext";
 
 type CartContextType = {
 	cart: CartWithProductIncluded[];
-	addItemToCart: (productId: string, quantity: number) => void;
+	addItemToCart: (productId: string, quantity?: number) => Promise<void>;
 	removeItemFromCart: (id: string) => void;
 	updateItemQuantity: (id: string, quantity: number) => void;
 };
@@ -32,6 +32,8 @@ export default function CartProvider({
 	useEffect(() => {
 		if (user) {
 			fetchCart();
+		} else {
+			setCart([]);
 		}
 	}, [user]);
 
@@ -42,12 +44,15 @@ export default function CartProvider({
 		}
 	};
 
-	const addItemToCart = async (productId: string, quantity: number = 1) => {
+	const addItemToCart = async (
+		productId: string,
+		quantity: number = 1
+	): Promise<void> => {
 		const newCartItems = await addItem(cart, productId, quantity);
 		setCart(newCartItems);
 	};
 
-	const removeItemFromCart = async (id: string) => {
+	const removeItemFromCart = async (id: string): Promise<void> => {
 		const cartAwaitingRemoval = cart;
 		setCart(cart.filter((item) => item.id !== id));
 		const result = await deleteItemFromCartAPI(id);
