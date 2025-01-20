@@ -1,7 +1,7 @@
 "use client";
 import { CartWithProductIncluded } from "@/types/cart";
 
-const apiUrl: string = process.env.API_URL;
+const apiUrl = process.env.API_URL;
 let updatedCartItems: CartWithProductIncluded[] = [];
 
 export async function addItem(
