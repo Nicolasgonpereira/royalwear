@@ -1,7 +1,6 @@
 "use client";
 import { CartWithProductIncluded } from "@/types/cart";
 
-const apiUrl = process.env.API_URL;
 let updatedCartItems: CartWithProductIncluded[] = [];
 
 export async function addItem(
@@ -37,7 +36,7 @@ export async function fetchCartFromAPI(): Promise<
 	CartWithProductIncluded[] | undefined
 > {
 	try {
-		const response = await fetch(`${apiUrl}/cart`);
+		const response = await fetch("/api/cart");
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
@@ -53,7 +52,7 @@ async function addItemToCartAPI(
 	quantity: number
 ): Promise<CartWithProductIncluded | undefined> {
 	try {
-		const response = await fetch(`${apiUrl}/cart`, {
+		const response = await fetch("/api/cart", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -75,7 +74,7 @@ export async function updateItemToCartAPI(
 	quantity: number
 ): Promise<boolean | undefined> {
 	try {
-		const response = await fetch(`${apiUrl}/cart/${id}`, {
+		const response = await fetch(`/api/cart/${id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json"
@@ -95,7 +94,7 @@ export async function deleteItemFromCartAPI(
 	productId: string
 ): Promise<boolean | undefined> {
 	try {
-		const response = await fetch(`${apiUrl}/cart/${productId}`, {
+		const response = await fetch(`/api/cart/${productId}`, {
 			method: "DELETE"
 		});
 		if (!response.ok) {

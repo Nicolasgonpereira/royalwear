@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page() {
-	const apiUrl = process.env.API_URL;
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -17,7 +16,7 @@ export default function Page() {
 	const handleRegister = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setLoading(true);
-		const registerResponse = await fetch(`${apiUrl}/auth/register`, {
+		const registerResponse = await fetch("/api/auth/register", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -36,7 +35,7 @@ export default function Page() {
 	};
 
 	const handleLogin = async () => {
-		const loginResponse = await fetch(`${apiUrl}/auth/login`, {
+		const loginResponse = await fetch("/auth/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"

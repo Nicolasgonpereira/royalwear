@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Page() {
-	const apiUrl = process.env.API_URL;
 	const { user, setUser } = useUser();
 	const router = useRouter();
 
@@ -17,7 +16,7 @@ export default function Page() {
 	}, [user, router]);
 
 	const handleLogout = async () => {
-		const response = await fetch(`${apiUrl}/auth/logout`, {
+		const response = await fetch("/api/auth/logout", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
