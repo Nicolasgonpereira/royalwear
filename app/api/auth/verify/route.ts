@@ -6,9 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function GET() {
 	const cookieStore = await cookies();
-	console.log(cookieStore);
 	const token = cookieStore.get("token");
-	console.log(token);
 
 	if (!token) {
 		return NextResponse.json(
